@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MedStore Q Bank</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #questionContainer {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+
+        #displayVariable {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>MedStore Q Bank</h1>
+
+    <!-- Display question here using JavaScript -->
+    <div id="questionContainer">
+        <!-- Questions dynamic loaded here -->
+    </div>
+
+    <!--Display score!-->
+    <h1 id="displayVariable">0</h1>
+
+    <script>
+        //sample database for Q
+        const quizQuestions = [
+           {
+                question: "what is the verb",
+                options: ["a) do", "b) fox", "c) he"],
+                correctAnswer: "a) do"
+            },
+            {
+                question: "what is the noun?",
+                options: ["a) is", "b) dog", "c) do"],
+                correctAnswer: "b) dog"
+
+            },
+            
+            // Add more questions as its your turn mohammad 🙂 
+        ];
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        // Function to display the current question
+        function displayCurrentQuestion() {
+            const question = quizQuestions[currentQuestionIndex];
+
+            const questionText = question.question;
+            const options = question.options.map((option) => {
+                return `<input type="radio" name="q${currentQuestionIndex}" value="${option}" onchange="checkAnswer()"> ${option} `;
+            }).join("<br>");
+
+            const questionHTML = `<h2>${questionText}</h2>${options}`;
+
+            document.getElementById("questionContainer").innerHTML = questionHTML;
+        }
+
+        function checkAnswer() {
+            const selectedOption = document.querySelector(`input[name="q${currentQuestionIndex}"]:checked`);
+            if (selectedOption && selectedOption.value === quizQuestions[currentQuestionIndex].correctAnswer) {
+                score++;
+                currentQuestionIndex++; // Move to the next question
+            }
+
+            if (currentQuestionIndex < quizQuestions.length) {
+                displayCurrentQuestion();
+            } else {
+                showResult();
+            }
+        }
+        // Display the Score 
+        function showResult() {
+            document.getElementById("questionContainer").innerHTML = "<p>Quiz Completed!</p>";
+            document.getElementById("displayVariable").innerText = `Your Score: ${score} out of ${quizQuestions.length}`;
+        }
+
+        // Loading process 
+        window.onload = displayCurrentQuestion;
+    </script>
+</body>
+</html>
